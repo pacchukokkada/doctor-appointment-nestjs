@@ -25,4 +25,10 @@ export class Doctor {
 
   @Column()
   specialty: string
+
+  @Column()
+  shift_start_time: string;
+
+  @Column()
+  shift_end_time: string;
 }

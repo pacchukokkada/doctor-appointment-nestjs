@@ -13,9 +13,20 @@ export class DoctorsService {
         private doctorsRepository: Repository<Doctor>,
     ){}
 
-    findAll(): Promise<Doctor[]> {
-        return this.doctorsRepository.find();
-    }
+    async findAll(page: number, limit: number): Promise<{data: Doctor[], totalCount: number,
+        page: number, limit: number}> {
+            const [data, total]  = await this.doctorsRepository.findAndCount({
+                skip: (page - 1) * limit,
+                take: limit,
+                order: {id: 'ASC'}
+            });
+            return {
+                data,
+                totalCount: total,
+                page,
+                limit,
+            }
+        }
 
     async findOne(id: number): Promise<Doctor> {
         const doctor = await this.doctorsRepository.findOne({where: {id}});
